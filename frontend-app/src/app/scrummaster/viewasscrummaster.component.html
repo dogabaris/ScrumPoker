@@ -1,5 +1,10 @@
 <div class="col-md-12">
   <div class="row">
+    <div style="text-align: right; padding-bottom: 40px;">
+      please share link of developers panel to the teammates: <a>
+        {{baseUrl}}/poker-planning-view-as-developer/{{sessionName}}
+      </a>
+    </div>
     <div class="col-md-5">
       <label for="storyList" style="padding-left: 0" class="col-md-4">Story List</label>
       <table id="storyList" class="table">
@@ -27,14 +32,6 @@
     <div class="col-md-4">
       <label for="activeStory" style="padding-left: 0" class="col-md-4">Active Story</label>
       <table id="activeStory" class="table">
-        <thead>
-          <tr>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
         <tbody>
           <tr>
             <td><button class="btn btn-default">1</button></td>
@@ -56,12 +53,6 @@
       <label for="scrumMasterPanel" style="padding-left: 0" class="col-md-12">Scrum Master Panel</label>
       Story 1 is active
       <table id="scrumMasterPanel" class="table">
-        <thead>
-          <tr>
-            <th scope="col"></th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
         <tbody>
           <tr>
             <td>Voter 1</td>
@@ -78,6 +69,7 @@
         </tbody>
       </table>
       <button class="btn btn-default">End Voting For Story 1</button>
+      <br />
       <br />
       You can not end voting till each teammate voted
     </div>

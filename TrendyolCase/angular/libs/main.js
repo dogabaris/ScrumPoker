@@ -47,12 +47,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ngx-toastr */ "./node_modules/ngx-toastr/fesm5/ngx-toastr.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+
 
 
 
 var AddStoryListComponent = /** @class */ (function () {
-    function AddStoryListComponent(toastr) {
+    function AddStoryListComponent(toastr, router) {
         this.toastr = toastr;
+        this.router = router;
         this.sessionName = '';
         this.numberVoters = 0;
         this.storyList = '';
@@ -86,15 +89,19 @@ var AddStoryListComponent = /** @class */ (function () {
         });
     };
     AddStoryListComponent.prototype.startSessions = function () {
-        if (this.checkConventions())
-            console.log("info ", this.sessionName, this.numberVoters, this.storyList);
+        if (this.checkConventions()) {
+            this.storyArray = this.storyList.split(new RegExp('[,;\n]', 'g'));
+            //let elements = rawElements.map(element => element.trim());
+            console.log(this.storyArray);
+            this.router.navigateByUrl('/poker-planning-view-as-scrummaster/' + this.sessionName);
+        }
     };
     AddStoryListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-addstorylist',
             template: __webpack_require__(/*! ./addstorylist.component.html */ "./src/app/addstorylist/addstorylist.component.html"),
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [ngx_toastr__WEBPACK_IMPORTED_MODULE_2__["ToastrService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [ngx_toastr__WEBPACK_IMPORTED_MODULE_2__["ToastrService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
     ], AddStoryListComponent);
     return AddStoryListComponent;
 }());
@@ -119,7 +126,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _addstorylist_addstorylist_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./addstorylist/addstorylist.component */ "./src/app/addstorylist/addstorylist.component.ts");
 /* harmony import */ var _scrummaster_viewasscrummaster_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./scrummaster/viewasscrummaster.component */ "./src/app/scrummaster/viewasscrummaster.component.ts");
 /* harmony import */ var _developer_viewasdeveloper_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./developer/viewasdeveloper.component */ "./src/app/developer/viewasdeveloper.component.ts");
-/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
+/* harmony import */ var _error_error_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./error/error.component */ "./src/app/error/error.component.ts");
+/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
+
 
 
 
@@ -134,15 +143,23 @@ var routes = [
     },
     {
         path: 'poker-planning-view-as-scrummaster',
-        component: _scrummaster_viewasscrummaster_component__WEBPACK_IMPORTED_MODULE_4__["ViewAsScrumMasterComponent"]
+        component: _error_error_component__WEBPACK_IMPORTED_MODULE_6__["ErrorComponent"]
     },
     {
         path: 'poker-planning-view-as-developer',
+        component: _error_error_component__WEBPACK_IMPORTED_MODULE_6__["ErrorComponent"]
+    },
+    {
+        path: 'poker-planning-view-as-scrummaster/:sessionName',
+        component: _scrummaster_viewasscrummaster_component__WEBPACK_IMPORTED_MODULE_4__["ViewAsScrumMasterComponent"]
+    },
+    {
+        path: 'poker-planning-view-as-developer/:sessionName',
         component: _developer_viewasdeveloper_component__WEBPACK_IMPORTED_MODULE_5__["ViewAsDeveloperComponent"]
     },
     {
         path: '',
-        component: _app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]
+        component: _app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"]
     }
 ];
 var AppRoutingModule = /** @class */ (function () {
@@ -234,7 +251,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _addstorylist_addstorylist_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./addstorylist/addstorylist.component */ "./src/app/addstorylist/addstorylist.component.ts");
 /* harmony import */ var _scrummaster_viewasscrummaster_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./scrummaster/viewasscrummaster.component */ "./src/app/scrummaster/viewasscrummaster.component.ts");
 /* harmony import */ var _developer_viewasdeveloper_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./developer/viewasdeveloper.component */ "./src/app/developer/viewasdeveloper.component.ts");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _error_error_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./error/error.component */ "./src/app/error/error.component.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+
 
 
 
@@ -255,13 +274,14 @@ var AppModule = /** @class */ (function () {
                 _app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"],
                 _addstorylist_addstorylist_component__WEBPACK_IMPORTED_MODULE_7__["AddStoryListComponent"],
                 _scrummaster_viewasscrummaster_component__WEBPACK_IMPORTED_MODULE_8__["ViewAsScrumMasterComponent"],
-                _developer_viewasdeveloper_component__WEBPACK_IMPORTED_MODULE_9__["ViewAsDeveloperComponent"]
+                _developer_viewasdeveloper_component__WEBPACK_IMPORTED_MODULE_9__["ViewAsDeveloperComponent"],
+                _error_error_component__WEBPACK_IMPORTED_MODULE_10__["ErrorComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
                 _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_3__["BrowserAnimationsModule"],
                 _app_routing_module__WEBPACK_IMPORTED_MODULE_5__["AppRoutingModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_10__["FormsModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_11__["FormsModule"],
                 ngx_toastr__WEBPACK_IMPORTED_MODULE_4__["ToastrModule"].forRoot()
             ],
             providers: [],
@@ -282,7 +302,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"col-md-12\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-8\">\r\n      <label for=\"storyList\" style=\"padding-left: 0\" class=\"col-md-4\">Story List</label>\r\n      <table id=\"storyList\" class=\"table\">\r\n        <thead>\r\n          <tr>\r\n            <th scope=\"col\">Story</th>\r\n            <th scope=\"col\">Story Point</th>\r\n            <th scope=\"col\">Status</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr>\r\n            <td>Story 1</td>\r\n            <td></td>\r\n            <td>Active</td>\r\n          </tr>\r\n          <tr>\r\n            <td>Story 2</td>\r\n            <td></td>\r\n            <td>Not Voted</td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n    <div class=\"col-md-4\">\r\n      <label for=\"activeStory\" style=\"padding-left: 0\" class=\"col-md-4\">Active Story</label>\r\n      <table id=\"activeStory\" class=\"table\">\r\n        <thead>\r\n          <tr>\r\n            <th scope=\"col\"></th>\r\n            <th scope=\"col\"></th>\r\n            <th scope=\"col\"></th>\r\n            <th scope=\"col\"></th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr>\r\n            <td><button class=\"btn btn-default\">1</button></td>\r\n            <td><button class=\"btn btn-default\">2</button></td>\r\n            <td><button class=\"btn btn-default\">3</button></td>\r\n            <td><button class=\"btn btn-default\">4</button></td>\r\n          </tr>\r\n          <tr>\r\n            <td><button class=\"btn btn-default\">5</button></td>\r\n            <td><button class=\"btn btn-default\">6</button></td>\r\n            <td><button class=\"btn btn-default\">7</button></td>\r\n            <td><button class=\"btn btn-default\">8</button></td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      Please Vote!!!\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"col-md-12\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-8\">\r\n      <label for=\"storyList\" style=\"padding-left: 0\" class=\"col-md-4\">Story List</label>\r\n      <table id=\"storyList\" class=\"table\">\r\n        <thead>\r\n          <tr>\r\n            <th scope=\"col\">Story</th>\r\n            <th scope=\"col\">Story Point</th>\r\n            <th scope=\"col\">Status</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr>\r\n            <td>Story 1</td>\r\n            <td></td>\r\n            <td>Active</td>\r\n          </tr>\r\n          <tr>\r\n            <td>Story 2</td>\r\n            <td></td>\r\n            <td>Not Voted</td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n    <div class=\"col-md-4\">\r\n      <label for=\"activeStory\" style=\"padding-left: 0\" class=\"col-md-4\">Active Story</label>\r\n      <table id=\"activeStory\" class=\"table\">\r\n        <tbody>\r\n          <tr>\r\n            <td><button class=\"btn btn-default\">1</button></td>\r\n            <td><button class=\"btn btn-default\">2</button></td>\r\n            <td><button class=\"btn btn-default\">3</button></td>\r\n            <td><button class=\"btn btn-default\">4</button></td>\r\n          </tr>\r\n          <tr>\r\n            <td><button class=\"btn btn-default\">5</button></td>\r\n            <td><button class=\"btn btn-default\">6</button></td>\r\n            <td><button class=\"btn btn-default\">7</button></td>\r\n            <td><button class=\"btn btn-default\">8</button></td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      Please Vote!!!\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -320,6 +340,47 @@ var ViewAsDeveloperComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/error/error.component.html":
+/*!********************************************!*\
+  !*** ./src/app/error/error.component.html ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h1>Error.</h1>\r\n<h2>There is no such session.</h2>\r\n"
+
+/***/ }),
+
+/***/ "./src/app/error/error.component.ts":
+/*!******************************************!*\
+  !*** ./src/app/error/error.component.ts ***!
+  \******************************************/
+/*! exports provided: ErrorComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ErrorComponent", function() { return ErrorComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+var ErrorComponent = /** @class */ (function () {
+    function ErrorComponent() {
+    }
+    ErrorComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-error',
+            template: __webpack_require__(/*! ./error.component.html */ "./src/app/error/error.component.html")
+        })
+    ], ErrorComponent);
+    return ErrorComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/scrummaster/viewasscrummaster.component.html":
 /*!**************************************************************!*\
   !*** ./src/app/scrummaster/viewasscrummaster.component.html ***!
@@ -327,7 +388,7 @@ var ViewAsDeveloperComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"col-md-12\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-5\">\r\n      <label for=\"storyList\" style=\"padding-left: 0\" class=\"col-md-4\">Story List</label>\r\n      <table id=\"storyList\" class=\"table\">\r\n        <thead>\r\n          <tr>\r\n            <th scope=\"col\">Story</th>\r\n            <th scope=\"col\">Story Point</th>\r\n            <th scope=\"col\">Status</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr>\r\n            <td>Story 1</td>\r\n            <td></td>\r\n            <td>Active</td>\r\n          </tr>\r\n          <tr>\r\n            <td>Story 2</td>\r\n            <td></td>\r\n            <td>Not Voted</td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n    <div class=\"col-md-4\">\r\n      <label for=\"activeStory\" style=\"padding-left: 0\" class=\"col-md-4\">Active Story</label>\r\n      <table id=\"activeStory\" class=\"table\">\r\n        <thead>\r\n          <tr>\r\n            <th scope=\"col\"></th>\r\n            <th scope=\"col\"></th>\r\n            <th scope=\"col\"></th>\r\n            <th scope=\"col\"></th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr>\r\n            <td><button class=\"btn btn-default\">1</button></td>\r\n            <td><button class=\"btn btn-default\">2</button></td>\r\n            <td><button class=\"btn btn-default\">3</button></td>\r\n            <td><button class=\"btn btn-default\">4</button></td>\r\n          </tr>\r\n          <tr>\r\n            <td><button class=\"btn btn-default\">5</button></td>\r\n            <td><button class=\"btn btn-default\">6</button></td>\r\n            <td><button class=\"btn btn-default\">7</button></td>\r\n            <td><button class=\"btn btn-default\">8</button></td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      Please Vote!!!\r\n    </div>\r\n    <div class=\"col-md-3\">\r\n      <label for=\"scrumMasterPanel\" style=\"padding-left: 0\" class=\"col-md-12\">Scrum Master Panel</label>\r\n      Story 1 is active\r\n      <table id=\"scrumMasterPanel\" class=\"table\">\r\n        <thead>\r\n          <tr>\r\n            <th scope=\"col\"></th>\r\n            <th scope=\"col\"></th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr>\r\n            <td>Voter 1</td>\r\n            <td>Voted</td>\r\n          </tr>\r\n          <tr>\r\n            <td>Voter 2</td>\r\n            <td>Not Voted</td>\r\n          </tr>\r\n          <tr>\r\n            <td>Scrum Master</td>\r\n            <td>Not Voted</td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      <button class=\"btn btn-default\">End Voting For Story 1</button>\r\n      <br />\r\n      You can not end voting till each teammate voted\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"col-md-12\">\r\n  <div class=\"row\">\r\n    <div style=\"text-align: right; padding-bottom: 40px;\">\r\n      please share link of developers panel to the teammates: <a>\r\n        {{baseUrl}}/poker-planning-view-as-developer/{{sessionName}}\r\n      </a>\r\n    </div>\r\n    <div class=\"col-md-5\">\r\n      <label for=\"storyList\" style=\"padding-left: 0\" class=\"col-md-4\">Story List</label>\r\n      <table id=\"storyList\" class=\"table\">\r\n        <thead>\r\n          <tr>\r\n            <th scope=\"col\">Story</th>\r\n            <th scope=\"col\">Story Point</th>\r\n            <th scope=\"col\">Status</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr>\r\n            <td>Story 1</td>\r\n            <td></td>\r\n            <td>Active</td>\r\n          </tr>\r\n          <tr>\r\n            <td>Story 2</td>\r\n            <td></td>\r\n            <td>Not Voted</td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n    <div class=\"col-md-4\">\r\n      <label for=\"activeStory\" style=\"padding-left: 0\" class=\"col-md-4\">Active Story</label>\r\n      <table id=\"activeStory\" class=\"table\">\r\n        <tbody>\r\n          <tr>\r\n            <td><button class=\"btn btn-default\">1</button></td>\r\n            <td><button class=\"btn btn-default\">2</button></td>\r\n            <td><button class=\"btn btn-default\">3</button></td>\r\n            <td><button class=\"btn btn-default\">4</button></td>\r\n          </tr>\r\n          <tr>\r\n            <td><button class=\"btn btn-default\">5</button></td>\r\n            <td><button class=\"btn btn-default\">6</button></td>\r\n            <td><button class=\"btn btn-default\">7</button></td>\r\n            <td><button class=\"btn btn-default\">8</button></td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      Please Vote!!!\r\n    </div>\r\n    <div class=\"col-md-3\">\r\n      <label for=\"scrumMasterPanel\" style=\"padding-left: 0\" class=\"col-md-12\">Scrum Master Panel</label>\r\n      Story 1 is active\r\n      <table id=\"scrumMasterPanel\" class=\"table\">\r\n        <tbody>\r\n          <tr>\r\n            <td>Voter 1</td>\r\n            <td>Voted</td>\r\n          </tr>\r\n          <tr>\r\n            <td>Voter 2</td>\r\n            <td>Not Voted</td>\r\n          </tr>\r\n          <tr>\r\n            <td>Scrum Master</td>\r\n            <td>Not Voted</td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      <button class=\"btn btn-default\">End Voting For Story 1</button>\r\n      <br />\r\n      <br />\r\n      You can not end voting till each teammate voted\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -344,19 +405,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ngx-toastr */ "./node_modules/ngx-toastr/fesm5/ngx-toastr.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+
 
 
 
 var ViewAsScrumMasterComponent = /** @class */ (function () {
-    function ViewAsScrumMasterComponent(toastr) {
+    function ViewAsScrumMasterComponent(toastr, router, route) {
         this.toastr = toastr;
+        this.router = router;
+        this.route = route;
     }
+    ViewAsScrumMasterComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        //this.sessionName = this.route.snapshot.params.sessionName;
+        this.route.params.subscribe(function (paramsId) {
+            _this.sessionName = paramsId.sessionName;
+            _this.baseUrl = window.location.origin;
+        });
+        console.log("sessionName: ", this.sessionName);
+    };
     ViewAsScrumMasterComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-viewasscrummaster',
             template: __webpack_require__(/*! ./viewasscrummaster.component.html */ "./src/app/scrummaster/viewasscrummaster.component.html"),
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [ngx_toastr__WEBPACK_IMPORTED_MODULE_2__["ToastrService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [ngx_toastr__WEBPACK_IMPORTED_MODULE_2__["ToastrService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"]])
     ], ViewAsScrumMasterComponent);
     return ViewAsScrumMasterComponent;
 }());

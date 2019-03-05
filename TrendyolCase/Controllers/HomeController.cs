@@ -24,10 +24,23 @@ namespace TrendyolCase.Controllers
         [Route("poker-planning-view-as-scrummaster")]
         public ActionResult PokerPlanningViewAsScrumMaster()
         {
-            return View();
+            return View("~/Views/Shared/SessionNameError.cshtml");
         }
+
         [Route("poker-planning-view-as-developer")]
         public ActionResult PokerPlanningViewAsDeveloper()
+        {
+            return View("~/Views/Shared/SessionNameError.cshtml");
+        }
+
+        [Route("poker-planning-view-as-scrummaster/{sessionName}")]
+        public ActionResult PokerPlanningViewAsScrumMaster(string sessionName)
+        {
+            return View();
+        }
+
+        [Route("poker-planning-view-as-developer/{sessionName}")]
+        public ActionResult PokerPlanningViewAsDeveloper(string sessionName)
         {
             return View();
         }

@@ -357,6 +357,7 @@
     <Content Include="Views\Home\PokerPlanningAddStoryList.cshtml" />
     <Content Include="Views\Home\PokerPlanningViewAsDeveloper.cshtml" />
     <Content Include="Views\Home\PokerPlanningViewAsScrumMaster.cshtml" />
+    <Content Include="Views\Shared\SessionNameError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

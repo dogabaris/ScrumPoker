@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { AddStoryListComponent } from './addstorylist/addstorylist.component';
 import { ViewAsScrumMasterComponent } from './scrummaster/viewasscrummaster.component';
 import { ViewAsDeveloperComponent } from './developer/viewasdeveloper.component';
+import { ErrorComponent } from './error/error.component';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -15,7 +16,8 @@ import { FormsModule } from '@angular/forms';
     AppComponent,
     AddStoryListComponent,
     ViewAsScrumMasterComponent,
-    ViewAsDeveloperComponent
+    ViewAsDeveloperComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

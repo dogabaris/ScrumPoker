@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-addstorylist',
@@ -9,7 +10,8 @@ export class AddStoryListComponent {
   sessionName = '';
   numberVoters = 0;
   storyList = '';
-  constructor(private toastr: ToastrService) { }
+  storyArray: String[];
+  constructor(private toastr: ToastrService, private router: Router) { }
 
   checkConventions() {
     if (this.sessionName.length > 200) {
@@ -44,7 +46,12 @@ export class AddStoryListComponent {
   }
 
   startSessions() {
-    if (this.checkConventions())
-      console.log("info ", this.sessionName, this.numberVoters, this.storyList);
+    if (this.checkConventions()) {
+      this.storyArray = this.storyList.split(new RegExp('[,;\n]', 'g'));
+      //let elements = rawElements.map(element => element.trim());
+      console.log(this.storyArray);
+      this.router.navigateByUrl('/poker-planning-view-as-scrummaster/'+this.sessionName);
+    }
+      
   }
 }
