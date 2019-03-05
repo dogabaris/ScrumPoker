@@ -6,24 +6,29 @@ using System.Web.Mvc;
 
 namespace TrendyolCase.Controllers
 {
+    [RoutePrefix("")]
     public class HomeController : Controller
     {
+        [Route]
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult About()
+        [Route("poker-planning-add-story-list")]
+        public ActionResult PokerPlanningAddStoryList()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        [Route("poker-planning-view-as-scrummaster")]
+        public ActionResult PokerPlanningViewAsScrumMaster()
         {
-            ViewBag.Message = "Your contact page.";
-
+            return View();
+        }
+        [Route("poker-planning-view-as-developer")]
+        public ActionResult PokerPlanningViewAsDeveloper()
+        {
             return View();
         }
     }

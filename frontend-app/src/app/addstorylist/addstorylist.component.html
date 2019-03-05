@@ -1,0 +1,23 @@
+<div class="col-md-12">
+  <div class="row">
+    <div class="col-md-6">
+      <label for="sessionName" style="padding-left: 0" class="col-md-4">Session Name</label>
+      <input type="text" [(ngModel)]="sessionName" class="form-control" id="sessionName">
+    </div>
+    <div class="col-md-6">
+      <label for="numberVoters" style="padding-left: 0" class="col-md-4">Number of voters</label>
+      <input type="number" [(ngModel)]="numberVoters" min="0" class="form-control" id="numberVoters">
+    </div>
+  </div>
+  <div class="row" style="padding-top: 30px;">
+    <div class="col-md-12">
+      <label for="storyList">Paste your story List(Each line will be converted as a story)</label>
+      <textarea class="form-control" [(ngModel)]="storyList" id="storyList" style="min-width: 100%"></textarea>
+    </div>
+  </div>
+  <div class="row" style="padding-top: 30px; text-align: right">
+    <div class="col-md-12">
+      <button type="button" (click)="startSessions()" class="btn btn-default">Start Session</button>
+    </div>
+  </div>
+</div>
