@@ -1,8 +1,17 @@
 <div class="col-md-12">
-  <div class="row">
+  <div *ngIf="isSessionFull">
+    <h1>Error.</h1>
+    <h2>Session is full!</h2>
+  </div>
+  <div *ngIf="noSuchSession">
+    <h1>Error.</h1>
+    <h2>There is no such session!</h2>
+  </div>
+  <div *ngIf="!isSessionFull && !noSuchSession" class="row">
     <div style="text-align: right; padding-bottom: 30px;">
-      please share link of developers panel to the teammates: <a>
-        {{baseUrl}}/poker-planning-view-as-developer/{{sessionName}}
+      please share link of developers panel to the teammates:
+      <a target="_blank" href="{{baseUrl}}/poker-planning-view-as-developer/{{encodedSessionName}}">
+        {{baseUrl}}/poker-planning-view-as-developer/{{encodedSessionName}}
       </a>
     </div>
     <div class="col-md-5">
@@ -72,11 +81,11 @@
             <td>
               {{vote.StoryPoint}}
               <!--<div *ngIf="!checkIfEveryBodyVote() && !vote.StoryPoint">
-            Not Voted
-          </div>
-          <div *ngIf="!checkIfEveryBodyVote() && vote.StoryPoint">
-            Voted
-          </div>-->
+                Not Voted
+              </div>
+              <div *ngIf="!checkIfEveryBodyVote() && vote.StoryPoint">
+                Voted
+              </div>-->
             </td>
           </tr>
         </tbody>

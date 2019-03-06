@@ -17,6 +17,8 @@ export class ViewAsDeveloperComponent implements OnInit {
   activeStoryIndex;
   sentVote;
   sessionFinished = false;
+  noSuchSession = false;
+
   constructor(private toastr: ToastrService, private connectionResolver: ConnectionResolver, private route: ActivatedRoute) {
 
   }
@@ -40,6 +42,7 @@ export class ViewAsDeveloperComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(paramsId => {
       this.sessionName = paramsId.sessionName;
+      console.log("sessionname ", this.sessionName);
     });
 
     this.connectionResolver.getSignalR().then((c) => {
@@ -69,6 +72,8 @@ export class ViewAsDeveloperComponent implements OnInit {
 
         if (result === "Session is full!")
           this.isSessionFull = true;
+        else if (result === "There is no such session!")
+          this.noSuchSession = true;
         else {
           this.session = result;
           this.setActiveStory();

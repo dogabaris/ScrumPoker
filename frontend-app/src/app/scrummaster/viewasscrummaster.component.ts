@@ -18,7 +18,11 @@ export class ViewAsScrumMasterComponent implements OnInit {
   sentVote;
   isAllVoted = false;
   finalScore = 0;
+  encodedSessionName;
   sessionFinished = false;
+  noSuchSession = false;
+  isSessionFull = false;
+
   constructor(private toastr: ToastrService,
     private router: Router, private route: ActivatedRoute, private connectionResolver: ConnectionResolver) {
   }
@@ -66,6 +70,7 @@ export class ViewAsScrumMasterComponent implements OnInit {
     this.route.params.subscribe(paramsId => {
       this.sessionName = paramsId.sessionName;
       this.baseUrl = window.location.origin;
+      this.encodedSessionName = encodeURIComponent(this.sessionName);
     });
 
     this.connectionResolver.getSignalR().then((c) => {
@@ -97,7 +102,13 @@ export class ViewAsScrumMasterComponent implements OnInit {
 
       onJoinSession.subscribe((result: any) => {
         console.log("JoinSessionResult: ", result);
-        this.session = result;
+        if (result === "Session is full!")
+          this.isSessionFull = true;
+        else if (result === "There is no such session!")
+          this.noSuchSession = true;
+        else {
+          this.session = result;
+        }
       });
 
       onSendVote.subscribe((result: any) => {

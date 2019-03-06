@@ -3,7 +3,11 @@
     <h1>Error.</h1>
     <h2>Session is full!</h2>
   </div>
-  <div *ngIf="!isSessionFull" class="row">
+  <div *ngIf="noSuchSession">
+    <h1>Error.</h1>
+    <h2>There is no such session!</h2>
+  </div>
+  <div *ngIf="!isSessionFull && !noSuchSession" class="row">
     <div class="col-md-8">
       <label for="storyList" style="padding-left: 8px;" class="col-md-4">Story List</label>
       <table id="storyList" class="table">

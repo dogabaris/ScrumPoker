@@ -26,6 +26,12 @@ namespace TrendyolCase
                 return;
 
             var session = SessionList.FirstOrDefault(x => x.Name == sessionName);
+            if (session == null)
+            {
+                Clients.Caller.JoinSessionResult("There is no such session!");
+                return;
+            }
+
             var emptyIndex = -1;
             
             for (int i = 0; i < session.StoryList[0].Votes.Count; i++)

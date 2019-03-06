@@ -1,17 +1,17 @@
 <div class="col-md-12">
   <div class="row">
-    <div class="col-md-6">
-      <label for="sessionName" style="padding-left: 0" class="col-md-4">Session Name</label>
+    <div class="col-md-7">
+      <label for="sessionName" style="padding-left: 0; padding-top: 5px;" class="col-md-4">Session Name</label>
       <input type="text" [(ngModel)]="sessionName" class="form-control" id="sessionName">
     </div>
-    <div class="col-md-6">
-      <label for="numberVoters" style="padding-left: 0" class="col-md-4">Number of voters</label>
+    <div class="col-md-5">
+      <label for="numberVoters" style="padding-left: 0; padding-top: 5px;" class="col-md-4">Number of Voters</label>
       <input type="number" [(ngModel)]="numberVoters" min="0" class="form-control" id="numberVoters">
     </div>
   </div>
   <div class="row" style="padding-top: 30px;">
     <div class="col-md-12">
-      <label for="storyList">Paste your story List(Each line will be converted as a story)</label>
+      <label for="storyList">Paste Your Story List (Each line will be converted as a story)</label>
       <textarea class="form-control" [(ngModel)]="storyList" id="storyList" style="min-width: 100%; min-height: 250px;"></textarea>
     </div>
   </div>
