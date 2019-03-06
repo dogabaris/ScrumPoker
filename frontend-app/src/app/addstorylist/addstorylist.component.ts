@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { ConnectionResolver } from '../helpers/signalResolver';
 
 @Component({
   selector: 'app-addstorylist',
@@ -11,7 +12,7 @@ export class AddStoryListComponent {
   numberVoters = 0;
   storyList = '';
   storyArray: String[];
-  constructor(private toastr: ToastrService, private router: Router) { }
+  constructor(private toastr: ToastrService, private router: Router, private connectionResolver: ConnectionResolver) { }
 
   checkConventions() {
     if (this.sessionName.length > 200) {
@@ -49,7 +50,12 @@ export class AddStoryListComponent {
     if (this.checkConventions()) {
       this.storyArray = this.storyList.split(new RegExp('[,;\n]', 'g'));
       //let elements = rawElements.map(element => element.trim());
-      console.log(this.storyArray);
+      //console.log(this.storyArray);
+      this.connectionResolver.getSignalR().then((c) => {
+        c.invoke('CreateSession', this.sessionName, this.numberVoters, this.storyArray).then(() => {
+
+        });
+      });
       this.router.navigateByUrl('/poker-planning-view-as-scrummaster/'+this.sessionName);
     }
       

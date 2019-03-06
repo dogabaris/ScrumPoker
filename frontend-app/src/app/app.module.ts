@@ -11,6 +11,10 @@ import { ViewAsDeveloperComponent } from './developer/viewasdeveloper.component'
 import { ErrorComponent } from './error/error.component';
 import { FormsModule } from '@angular/forms';
 
+import { SignalRModule } from 'ng2-signalr';
+import { ConnectionResolver } from './helpers/signalResolver';
+import { Globals } from './helpers/globals';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,9 +28,12 @@ import { FormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    SignalRModule.forRoot(Globals.createConfig)
   ],
-  providers: [],
+  providers: [
+    ConnectionResolver
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

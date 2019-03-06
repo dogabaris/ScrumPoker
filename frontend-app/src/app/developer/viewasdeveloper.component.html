@@ -1,48 +1,63 @@
 <div class="col-md-12">
-  <div class="row">
+  <div *ngIf="isSessionFull">
+    <h1>Error.</h1>
+    <h2>Session is full!</h2>
+  </div>
+  <div *ngIf="!isSessionFull" class="row">
     <div class="col-md-8">
-      <label for="storyList" style="padding-left: 0" class="col-md-4">Story List</label>
+      <label for="storyList" style="padding-left: 8px;" class="col-md-4">Story List</label>
       <table id="storyList" class="table">
         <thead>
-          <tr>
-            <th scope="col">Story</th>
-            <th scope="col">Story Point</th>
-            <th scope="col">Status</th>
-          </tr>
+        <tr>
+          <th scope="col">Story</th>
+          <th scope="col">Story Point</th>
+          <th scope="col">Status</th>
+        </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Story 1</td>
-            <td></td>
-            <td>Active</td>
-          </tr>
-          <tr>
-            <td>Story 2</td>
-            <td></td>
-            <td>Not Voted</td>
-          </tr>
+        <tr *ngFor="let story of session?.StoryList">
+          <td>
+            {{story.StoryName}}
+          </td>
+          <td>
+            {{story.StoryPoint}}
+          </td>
+          <td>
+            <div *ngIf="story.Status==0">Active</div>
+            <div *ngIf="story.Status==1">Voted</div>
+            <div *ngIf="story.Status==2">Not Voted</div>
+          </td>
+        </tr>
         </tbody>
       </table>
     </div>
     <div class="col-md-4">
       <label for="activeStory" style="padding-left: 0" class="col-md-4">Active Story</label>
-      <table id="activeStory" class="table">
+      <small> {{activeStory}} </small>
+      <table id="activeStory" style="margin-top: 40px;" class="table">
         <tbody>
-          <tr>
-            <td><button class="btn btn-default">1</button></td>
-            <td><button class="btn btn-default">2</button></td>
-            <td><button class="btn btn-default">3</button></td>
-            <td><button class="btn btn-default">4</button></td>
-          </tr>
-          <tr>
-            <td><button class="btn btn-default">5</button></td>
-            <td><button class="btn btn-default">6</button></td>
-            <td><button class="btn btn-default">7</button></td>
-            <td><button class="btn btn-default">8</button></td>
-          </tr>
+        <tr>
+          <td><button (click)="sendVote(1);" class="btn btn-default">1</button></td>
+          <td><button (click)="sendVote(2);" class="btn btn-default">2</button></td>
+          <td><button (click)="sendVote(3);" class="btn btn-default">3</button></td>
+          <td><button (click)="sendVote(5);" class="btn btn-default">5</button></td>
+        </tr>
+        <tr>
+          <td><button (click)="sendVote(8);" class="btn btn-default">8</button></td>
+          <td><button (click)="sendVote(13);" class="btn btn-default">13</button></td>
+          <td><button (click)="sendVote(21);" class="btn btn-default">21</button></td>
+          <td><button (click)="sendVote(34);" class="btn btn-default">34</button></td>
+        </tr>
+        <tr>
+          <td><button (click)="sendVote(55);" class="btn btn-default">55</button></td>
+          <td><button (click)="sendVote(89);" class="btn btn-default">89</button></td>
+          <td><button (click)="sendVote(144);" class="btn btn-default">134</button></td>
+          <td><button (click)="sendVote(233);" class="btn btn-default">233</button></td>
+        </tr>
         </tbody>
       </table>
-      Please Vote!!!
+      <div *ngIf="sentVote" style="text-align: center">{{sentVote}} Voted</div>
+      <div *ngIf="!sentVote" style="text-align: center">Please Vote!!!</div>
     </div>
   </div>
 </div>
