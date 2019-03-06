@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
@@ -22,6 +22,20 @@ export class ViewAsScrumMasterComponent implements OnInit {
   sessionFinished = false;
   noSuchSession = false;
   isSessionFull = false;
+  isDifferentVotes = false;
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler(event) {
+    this.leaveSession();
+  };
+
+  leaveSession() {
+    this.connectionResolver.getSignalR().then((c) => {
+      c.invoke('LeaveSession', this.sessionName).then(() => {
+        console.log("Çıkış yapıldı.");
+      });
+    });
+  }
 
   constructor(private toastr: ToastrService,
     private router: Router, private route: ActivatedRoute, private connectionResolver: ConnectionResolver) {
@@ -35,18 +49,16 @@ export class ViewAsScrumMasterComponent implements OnInit {
         return;
       }
     }
-    console.log("isallvoted true");
+    console.log("isAllVoted true");
     this.isAllVoted = true;
   }
 
   sendFinalScore() {
-    if (this.finalScore != 0 || !this.finalScore) {
-      this.connectionResolver.getSignalR().then((c) => {
-        c.invoke('SendFinalScore', this.sessionName, this.activeStory, this.activeStoryIndex, this.finalScore).then(() => {
-          //Temizlenecekler var.
-        });
+    console.log("SendFinalScore ", this.sessionName, this.activeStory, this.activeStoryIndex, this.finalScore);
+    this.connectionResolver.getSignalR().then((c) => {
+      c.invoke('SendFinalScore', this.sessionName, this.activeStory, this.activeStoryIndex, this.finalScore).then(() => {
       });
-    }
+    });
   }
 
   sendVote(storyPoint) {
@@ -97,6 +109,7 @@ export class ViewAsScrumMasterComponent implements OnInit {
         this.setActiveStory();
         this.sentVote = null;
         this.finalScore = 0;
+        this.isDifferentVotes = false;
         this.checkIfEveryBodyVote();
       });
 
@@ -115,6 +128,14 @@ export class ViewAsScrumMasterComponent implements OnInit {
         console.log("SendVoteResult: ", result);
         this.session = result;
         this.checkIfEveryBodyVote();
+        if (this.isAllVoted) {
+          if (this.session.StoryList[this.activeStoryIndex].Votes.every(x => x.StoryPoint == this.session.StoryList[this.activeStoryIndex].Votes[0].StoryPoint)) {
+            console.log("Final Score automatically set!");
+            this.isDifferentVotes = true;
+            var newFinalScore = this.session.StoryList[this.activeStoryIndex].Votes[0].StoryPoint;
+            this.finalScore = newFinalScore;
+          }
+        }
       });
 
       onCreateSession.subscribe((result: any) => {

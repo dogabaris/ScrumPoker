@@ -15,9 +15,47 @@ namespace TrendyolCase
 
         public PokerHub()
         { }
+
         public override Task OnConnected()
         {
             return base.OnConnected();
+        }
+
+        public override Task OnDisconnected(bool stopCalled)
+        {
+            return base.OnDisconnected(stopCalled);
+        }
+
+        public void LeaveSession(string sessionName)
+        {
+            if (string.IsNullOrWhiteSpace(sessionName))
+                return;
+            var session = SessionList.FirstOrDefault(x => x.Name == sessionName);
+            if (session != null)
+            {
+                var voterIndex = -1;
+
+                for (int i = 0; i < session.StoryList[0].Votes.Count; i++)
+                {
+                    if (session.StoryList[0].Votes[i].VoterId == Context.ConnectionId)
+                    {
+                        voterIndex = i;
+                        break;
+                    }
+                }
+
+                if (voterIndex > -1)
+                {
+                    Groups.Add(Context.ConnectionId, sessionName);
+
+                    foreach (var story in session.StoryList)
+                    {
+                        story.Votes[voterIndex].VoterId = null;
+                    }
+
+                    Clients.Group(sessionName).LeaveSessionResult(session);
+                }
+            }
         }
 
         public void JoinSession(string sessionName)
@@ -125,7 +163,7 @@ namespace TrendyolCase
         public void CreateSession(string sessionName, int numberVoters, List<string> stories)
         {
             Groups.Add(Context.ConnectionId, sessionName);
-
+            
             var storyList = new List<Story>();
 
             for (var i = 0; i < stories.Count; i++)
@@ -151,7 +189,6 @@ namespace TrendyolCase
                 Name = sessionName,
                 NumberVoters = numberVoters,
                 StoryList = storyList,
-
             };
             SessionList.Add(newSession);
             Clients.Caller.CreateSessionResult(newSession);

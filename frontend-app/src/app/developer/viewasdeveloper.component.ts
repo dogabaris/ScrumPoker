@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ConnectionResolver } from '../helpers/signalResolver';
 import { BroadcastEventListener } from 'ng2-signalr';
@@ -18,6 +18,19 @@ export class ViewAsDeveloperComponent implements OnInit {
   sentVote;
   sessionFinished = false;
   noSuchSession = false;
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler(event) {
+    this.leaveSession();
+  };
+
+  leaveSession() {
+    this.connectionResolver.getSignalR().then((c) => {
+      c.invoke('LeaveSession', this.sessionName).then(() => {
+        console.log("Çıkış yapıldı.");
+      });
+    });
+  }
 
   constructor(private toastr: ToastrService, private connectionResolver: ConnectionResolver, private route: ActivatedRoute) {
 
@@ -50,10 +63,17 @@ export class ViewAsDeveloperComponent implements OnInit {
       let onSendVote = new BroadcastEventListener('SendVoteResult');
       let onSendFinalScore = new BroadcastEventListener('SendFinalScoreResult');
       let onSessionFinished = new BroadcastEventListener('SessionFinished');
+      let onLeaveSession = new BroadcastEventListener('LeaveSessionResult');
+      c.listen(onLeaveSession);
       c.listen(onSessionFinished);
       c.listen(onJoinSession);
       c.listen(onSendVote);
       c.listen(onSendFinalScore);
+
+      onLeaveSession.subscribe((result: any) => {
+        console.log("LeaveSessionResult: ", result);
+        this.session = result;
+      });
 
       onSessionFinished.subscribe((result: any) => {
         console.log("SessionFinished: ", result);

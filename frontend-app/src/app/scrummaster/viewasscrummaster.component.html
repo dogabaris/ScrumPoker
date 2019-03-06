@@ -91,8 +91,8 @@
         </tbody>
       </table>
       <div *ngIf="isAllVoted">
-        Seems team has different votes
-        <br />
+        <div *ngIf="!isDifferentVotes">Seems team has different votes</div>
+        <br/>
         Please discuss and finalize the score below textbox
         <label for="finalScore" style="padding-left: 0; padding-top: 10px" class="col-md-12">Final Score</label>
         <input type="number" [(ngModel)]="finalScore" min="0" class="form-control" id="finalScore">

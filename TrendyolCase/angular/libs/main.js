@@ -204,7 +204,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<router-outlet></router-outlet>\r\n"
+module.exports = "\r\n<router-outlet></router-outlet>\r\n"
 
 /***/ }),
 
@@ -375,6 +375,18 @@ var ViewAsDeveloperComponent = /** @class */ (function () {
         this.sessionFinished = false;
         this.noSuchSession = false;
     }
+    ViewAsDeveloperComponent.prototype.beforeunloadHandler = function (event) {
+        this.leaveSession();
+    };
+    ;
+    ViewAsDeveloperComponent.prototype.leaveSession = function () {
+        var _this = this;
+        this.connectionResolver.getSignalR().then(function (c) {
+            c.invoke('LeaveSession', _this.sessionName).then(function () {
+                console.log("Çıkış yapıldı.");
+            });
+        });
+    };
     ViewAsDeveloperComponent.prototype.sendVote = function (storyPoint) {
         var _this = this;
         this.connectionResolver.getSignalR().then(function (c) {
@@ -399,10 +411,16 @@ var ViewAsDeveloperComponent = /** @class */ (function () {
             var onSendVote = new ng2_signalr__WEBPACK_IMPORTED_MODULE_4__["BroadcastEventListener"]('SendVoteResult');
             var onSendFinalScore = new ng2_signalr__WEBPACK_IMPORTED_MODULE_4__["BroadcastEventListener"]('SendFinalScoreResult');
             var onSessionFinished = new ng2_signalr__WEBPACK_IMPORTED_MODULE_4__["BroadcastEventListener"]('SessionFinished');
+            var onLeaveSession = new ng2_signalr__WEBPACK_IMPORTED_MODULE_4__["BroadcastEventListener"]('LeaveSessionResult');
+            c.listen(onLeaveSession);
             c.listen(onSessionFinished);
             c.listen(onJoinSession);
             c.listen(onSendVote);
             c.listen(onSendFinalScore);
+            onLeaveSession.subscribe(function (result) {
+                console.log("LeaveSessionResult: ", result);
+                _this.session = result;
+            });
             onSessionFinished.subscribe(function (result) {
                 console.log("SessionFinished: ", result);
                 _this.sessionFinished = true;
@@ -440,6 +458,12 @@ var ViewAsDeveloperComponent = /** @class */ (function () {
             }
         }
     };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"])('window:beforeunload', ['$event']),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Function),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [Object]),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:returntype", void 0)
+    ], ViewAsDeveloperComponent.prototype, "beforeunloadHandler", null);
     ViewAsDeveloperComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-viewasdeveloper',
@@ -569,7 +593,7 @@ var ConnectionResolver = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"col-md-12\">\r\n  <div *ngIf=\"isSessionFull\">\r\n    <h1>Error.</h1>\r\n    <h2>Session is full!</h2>\r\n  </div>\r\n  <div *ngIf=\"noSuchSession\">\r\n    <h1>Error.</h1>\r\n    <h2>There is no such session!</h2>\r\n  </div>\r\n  <div *ngIf=\"!isSessionFull && !noSuchSession\" class=\"row\">\r\n    <div style=\"text-align: right; padding-bottom: 30px;\">\r\n      please share link of developers panel to the teammates:\r\n      <a target=\"_blank\" href=\"{{baseUrl}}/poker-planning-view-as-developer/{{encodedSessionName}}\">\r\n        {{baseUrl}}/poker-planning-view-as-developer/{{encodedSessionName}}\r\n      </a>\r\n    </div>\r\n    <div class=\"col-md-5\">\r\n      <label for=\"storyList\" style=\"padding-left: 8px;\" class=\"col-md-4\">Story List</label>\r\n      <table id=\"storyList\" class=\"table\">\r\n        <thead>\r\n          <tr>\r\n            <th scope=\"col\">Story</th>\r\n            <th scope=\"col\">Story Point</th>\r\n            <th scope=\"col\">Status</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr *ngFor=\"let story of session?.StoryList\">\r\n            <td>\r\n              {{story.StoryName}}\r\n            </td>\r\n            <td>\r\n              {{story.StoryPoint}}\r\n            </td>\r\n            <td>\r\n              <div *ngIf=\"story.Status==0\">Active</div>\r\n              <div *ngIf=\"story.Status==1\">Voted</div>\r\n              <div *ngIf=\"story.Status==2\">Not Voted</div>\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n    <div class=\"col-md-4\">\r\n      <label for=\"activeStory\" style=\"padding-left: 0;\" class=\"col-md-4\">Active Story</label>\r\n      <small>{{activeStory}}</small>\r\n      <table id=\"activeStory\" style=\"margin-top: 40px;\" class=\"table\">\r\n        <tbody>\r\n          <tr>\r\n            <td><button (click)=\"sendVote(1);\" class=\"btn btn-default\">1</button></td>\r\n            <td><button (click)=\"sendVote(2);\" class=\"btn btn-default\">2</button></td>\r\n            <td><button (click)=\"sendVote(3);\" class=\"btn btn-default\">3</button></td>\r\n            <td><button (click)=\"sendVote(5);\" class=\"btn btn-default\">5</button></td>\r\n          </tr>\r\n          <tr>\r\n            <td><button (click)=\"sendVote(8);\" class=\"btn btn-default\">8</button></td>\r\n            <td><button (click)=\"sendVote(13);\" class=\"btn btn-default\">13</button></td>\r\n            <td><button (click)=\"sendVote(21);\" class=\"btn btn-default\">21</button></td>\r\n            <td><button (click)=\"sendVote(34);\" class=\"btn btn-default\">34</button></td>\r\n          </tr>\r\n          <tr>\r\n            <td><button (click)=\"sendVote(55);\" class=\"btn btn-default\">55</button></td>\r\n            <td><button (click)=\"sendVote(89);\" class=\"btn btn-default\">89</button></td>\r\n            <td><button (click)=\"sendVote(144);\" class=\"btn btn-default\">134</button></td>\r\n            <td><button (click)=\"sendVote(233);\" class=\"btn btn-default\">233</button></td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      <div *ngIf=\"sentVote\">{{sentVote}} Voted</div>\r\n      <div *ngIf=\"!sentVote\" style=\"text-align: center;\">Please Vote!!!</div>\r\n    </div>\r\n    <div class=\"col-md-3\">\r\n      <label for=\"scrumMasterPanel\" style=\"padding-left: 0\" class=\"col-md-12\">Scrum Master Panel</label>\r\n      <small>{{activeStory}} is active</small>\r\n      <table id=\"scrumMasterPanel\" style=\"margin-top: 15px;\" class=\"table\">\r\n        <tbody>\r\n          <tr *ngFor=\"let vote of session?.StoryList[activeStoryIndex].Votes; index as i\">\r\n            <td>\r\n              {{vote.VoterName}}\r\n            </td>\r\n            <td>\r\n              {{vote.StoryPoint}}\r\n              <!--<div *ngIf=\"!checkIfEveryBodyVote() && !vote.StoryPoint\">\r\n                Not Voted\r\n              </div>\r\n              <div *ngIf=\"!checkIfEveryBodyVote() && vote.StoryPoint\">\r\n                Voted\r\n              </div>-->\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      <div *ngIf=\"isAllVoted\">\r\n        Seems team has different votes\r\n        <br />\r\n        Please discuss and finalize the score below textbox\r\n        <label for=\"finalScore\" style=\"padding-left: 0; padding-top: 10px\" class=\"col-md-12\">Final Score</label>\r\n        <input type=\"number\" [(ngModel)]=\"finalScore\" min=\"0\" class=\"form-control\" id=\"finalScore\">\r\n      </div>\r\n      <br />\r\n      <button [ngClass]=\"{disabled : !isAllVoted}\" class=\"btn btn-default col-md-12\" style=\"text-align: center\" (click)=\"isAllVoted && sendFinalScore();\">\r\n        End Voting For {{activeStory}}\r\n      </button>\r\n      <br />\r\n      <br />\r\n      <div style=\"text-align: center;\">You can not end voting till each teammate voted</div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"col-md-12\">\r\n  <div *ngIf=\"isSessionFull\">\r\n    <h1>Error.</h1>\r\n    <h2>Session is full!</h2>\r\n  </div>\r\n  <div *ngIf=\"noSuchSession\">\r\n    <h1>Error.</h1>\r\n    <h2>There is no such session!</h2>\r\n  </div>\r\n  <div *ngIf=\"!isSessionFull && !noSuchSession\" class=\"row\">\r\n    <div style=\"text-align: right; padding-bottom: 30px;\">\r\n      please share link of developers panel to the teammates:\r\n      <a target=\"_blank\" href=\"{{baseUrl}}/poker-planning-view-as-developer/{{encodedSessionName}}\">\r\n        {{baseUrl}}/poker-planning-view-as-developer/{{encodedSessionName}}\r\n      </a>\r\n    </div>\r\n    <div class=\"col-md-5\">\r\n      <label for=\"storyList\" style=\"padding-left: 8px;\" class=\"col-md-4\">Story List</label>\r\n      <table id=\"storyList\" class=\"table\">\r\n        <thead>\r\n          <tr>\r\n            <th scope=\"col\">Story</th>\r\n            <th scope=\"col\">Story Point</th>\r\n            <th scope=\"col\">Status</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr *ngFor=\"let story of session?.StoryList\">\r\n            <td>\r\n              {{story.StoryName}}\r\n            </td>\r\n            <td>\r\n              {{story.StoryPoint}}\r\n            </td>\r\n            <td>\r\n              <div *ngIf=\"story.Status==0\">Active</div>\r\n              <div *ngIf=\"story.Status==1\">Voted</div>\r\n              <div *ngIf=\"story.Status==2\">Not Voted</div>\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n    <div class=\"col-md-4\">\r\n      <label for=\"activeStory\" style=\"padding-left: 0;\" class=\"col-md-4\">Active Story</label>\r\n      <small>{{activeStory}}</small>\r\n      <table id=\"activeStory\" style=\"margin-top: 40px;\" class=\"table\">\r\n        <tbody>\r\n          <tr>\r\n            <td><button (click)=\"sendVote(1);\" class=\"btn btn-default\">1</button></td>\r\n            <td><button (click)=\"sendVote(2);\" class=\"btn btn-default\">2</button></td>\r\n            <td><button (click)=\"sendVote(3);\" class=\"btn btn-default\">3</button></td>\r\n            <td><button (click)=\"sendVote(5);\" class=\"btn btn-default\">5</button></td>\r\n          </tr>\r\n          <tr>\r\n            <td><button (click)=\"sendVote(8);\" class=\"btn btn-default\">8</button></td>\r\n            <td><button (click)=\"sendVote(13);\" class=\"btn btn-default\">13</button></td>\r\n            <td><button (click)=\"sendVote(21);\" class=\"btn btn-default\">21</button></td>\r\n            <td><button (click)=\"sendVote(34);\" class=\"btn btn-default\">34</button></td>\r\n          </tr>\r\n          <tr>\r\n            <td><button (click)=\"sendVote(55);\" class=\"btn btn-default\">55</button></td>\r\n            <td><button (click)=\"sendVote(89);\" class=\"btn btn-default\">89</button></td>\r\n            <td><button (click)=\"sendVote(144);\" class=\"btn btn-default\">134</button></td>\r\n            <td><button (click)=\"sendVote(233);\" class=\"btn btn-default\">233</button></td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      <div *ngIf=\"sentVote\">{{sentVote}} Voted</div>\r\n      <div *ngIf=\"!sentVote\" style=\"text-align: center;\">Please Vote!!!</div>\r\n    </div>\r\n    <div class=\"col-md-3\">\r\n      <label for=\"scrumMasterPanel\" style=\"padding-left: 0\" class=\"col-md-12\">Scrum Master Panel</label>\r\n      <small>{{activeStory}} is active</small>\r\n      <table id=\"scrumMasterPanel\" style=\"margin-top: 15px;\" class=\"table\">\r\n        <tbody>\r\n          <tr *ngFor=\"let vote of session?.StoryList[activeStoryIndex].Votes; index as i\">\r\n            <td>\r\n              {{vote.VoterName}}\r\n            </td>\r\n            <td>\r\n              {{vote.StoryPoint}}\r\n              <!--<div *ngIf=\"!checkIfEveryBodyVote() && !vote.StoryPoint\">\r\n                Not Voted\r\n              </div>\r\n              <div *ngIf=\"!checkIfEveryBodyVote() && vote.StoryPoint\">\r\n                Voted\r\n              </div>-->\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      <div *ngIf=\"isAllVoted\">\r\n        <div *ngIf=\"!isDifferentVotes\">Seems team has different votes</div>\r\n        <br/>\r\n        Please discuss and finalize the score below textbox\r\n        <label for=\"finalScore\" style=\"padding-left: 0; padding-top: 10px\" class=\"col-md-12\">Final Score</label>\r\n        <input type=\"number\" [(ngModel)]=\"finalScore\" min=\"0\" class=\"form-control\" id=\"finalScore\">\r\n      </div>\r\n      <br />\r\n      <button [ngClass]=\"{disabled : !isAllVoted}\" class=\"btn btn-default col-md-12\" style=\"text-align: center\" (click)=\"isAllVoted && sendFinalScore();\">\r\n        End Voting For {{activeStory}}\r\n      </button>\r\n      <br />\r\n      <br />\r\n      <div style=\"text-align: center;\">You can not end voting till each teammate voted</div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -606,7 +630,20 @@ var ViewAsScrumMasterComponent = /** @class */ (function () {
         this.sessionFinished = false;
         this.noSuchSession = false;
         this.isSessionFull = false;
+        this.isDifferentVotes = false;
     }
+    ViewAsScrumMasterComponent.prototype.beforeunloadHandler = function (event) {
+        this.leaveSession();
+    };
+    ;
+    ViewAsScrumMasterComponent.prototype.leaveSession = function () {
+        var _this = this;
+        this.connectionResolver.getSignalR().then(function (c) {
+            c.invoke('LeaveSession', _this.sessionName).then(function () {
+                console.log("Çıkış yapıldı.");
+            });
+        });
+    };
     ViewAsScrumMasterComponent.prototype.checkIfEveryBodyVote = function () {
         for (var i = 0; i < this.session.StoryList[this.activeStoryIndex].Votes.length; i++) {
             if (this.session.StoryList[this.activeStoryIndex].Votes[i].StoryPoint == null) {
@@ -615,18 +652,16 @@ var ViewAsScrumMasterComponent = /** @class */ (function () {
                 return;
             }
         }
-        console.log("isallvoted true");
+        console.log("isAllVoted true");
         this.isAllVoted = true;
     };
     ViewAsScrumMasterComponent.prototype.sendFinalScore = function () {
         var _this = this;
-        if (this.finalScore != 0 || !this.finalScore) {
-            this.connectionResolver.getSignalR().then(function (c) {
-                c.invoke('SendFinalScore', _this.sessionName, _this.activeStory, _this.activeStoryIndex, _this.finalScore).then(function () {
-                    //Temizlenecekler var.
-                });
+        console.log("SendFinalScore ", this.sessionName, this.activeStory, this.activeStoryIndex, this.finalScore);
+        this.connectionResolver.getSignalR().then(function (c) {
+            c.invoke('SendFinalScore', _this.sessionName, _this.activeStory, _this.activeStoryIndex, _this.finalScore).then(function () {
             });
-        }
+        });
     };
     ViewAsScrumMasterComponent.prototype.sendVote = function (storyPoint) {
         var _this = this;
@@ -671,6 +706,7 @@ var ViewAsScrumMasterComponent = /** @class */ (function () {
                 _this.setActiveStory();
                 _this.sentVote = null;
                 _this.finalScore = 0;
+                _this.isDifferentVotes = false;
                 _this.checkIfEveryBodyVote();
             });
             onJoinSession.subscribe(function (result) {
@@ -687,6 +723,14 @@ var ViewAsScrumMasterComponent = /** @class */ (function () {
                 console.log("SendVoteResult: ", result);
                 _this.session = result;
                 _this.checkIfEveryBodyVote();
+                if (_this.isAllVoted) {
+                    if (_this.session.StoryList[_this.activeStoryIndex].Votes.every(function (x) { return x.StoryPoint == _this.session.StoryList[_this.activeStoryIndex].Votes[0].StoryPoint; })) {
+                        console.log("Final Score automatically set!");
+                        _this.isDifferentVotes = true;
+                        var newFinalScore = _this.session.StoryList[_this.activeStoryIndex].Votes[0].StoryPoint;
+                        _this.finalScore = newFinalScore;
+                    }
+                }
             });
             onCreateSession.subscribe(function (result) {
                 console.log("CreateSessionResult: ", result);
@@ -703,6 +747,12 @@ var ViewAsScrumMasterComponent = /** @class */ (function () {
             }
         }
     };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"])('window:beforeunload', ['$event']),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Function),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [Object]),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:returntype", void 0)
+    ], ViewAsScrumMasterComponent.prototype, "beforeunloadHandler", null);
     ViewAsScrumMasterComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-viewasscrummaster',

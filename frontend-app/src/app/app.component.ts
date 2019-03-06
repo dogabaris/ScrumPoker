@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ConnectionResolver } from './helpers/signalResolver';
 import { ConnectionStatus } from 'ng2-signalr';
 
