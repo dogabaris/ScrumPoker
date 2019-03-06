@@ -32,12 +32,17 @@ IIS sunucu/proje run edilmelidir.
 
 Session ve storyleri oluşturmak için;
 
-⋅⋅* localhost(:port)/poker-planning-add-story-list
+```bash
+localhost(:port)/poker-planning-add-story-list
+```
 
 Scrum Master'ın session/storyleri oluşturduktan sonra yönlendirildiği link;
 
-⋅⋅* localhost(:port)/poker-planning-view-as-scrummaster/:sessionName
+```bash
+localhost(:port)/poker-planning-view-as-scrummaster/:sessionName
+```
 
 Developerlar ile paylaşılan link;
-
-⋅⋅* localhost(:port)/poker-planning-view-as-developer/:sessionName
+```bash
+localhost(:port)/poker-planning-view-as-developer/:sessionName
+```
