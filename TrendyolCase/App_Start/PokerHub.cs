@@ -71,7 +71,7 @@ namespace TrendyolCase
             }
 
             var emptyIndex = -1;
-            
+
             for (int i = 0; i < session.StoryList[0].Votes.Count; i++)
             {
                 if (string.IsNullOrWhiteSpace(session.StoryList[0].Votes[i].VoterId))
@@ -89,12 +89,6 @@ namespace TrendyolCase
                 {
                     story.Votes[emptyIndex].VoterId = Context.ConnectionId;
                 }
-
-                //var votes = session.StoryList.Select(y =>
-                //{
-                //    y.Votes[emptyIndex].VoterId = Context.ConnectionId;
-                //    return y;
-                //});
 
                 Clients.Group(sessionName).JoinSessionResult(session);
             }
@@ -132,38 +126,19 @@ namespace TrendyolCase
             vote.StoryPoint = storyPoint;
 
             Clients.Group(sessionName).SendVoteResult(session);
-
-            //var session = new SessionDto();
-            //foreach (var ses in SessionList)
-            //{
-            //    if (ses.Name == sessionName)
-            //    {
-            //        foreach (var story in ses.StoryList)
-            //        {
-            //            if (story.StoryName == storyName)
-            //            {
-            //                foreach (var vote in story.Votes)
-            //                {
-            //                    if (vote.VoterId == Context.ConnectionId)
-            //                    {
-            //                        vote.StoryPoint = storyPoint;
-            //                        //session = ses;
-            //                        Clients.Group(sessionName).SendVoteResult(ses);
-            //                        return;
-            //                    }
-            //                }
-            //                break;
-            //            }
-            //        }
-            //        break;
-            //    }
-            //}
         }
 
         public void CreateSession(string sessionName, int numberVoters, List<string> stories)
         {
+            if (SessionList.Any(x => x.Name == sessionName))
+            {
+                Clients.Caller.SessionExist("Session already exists!");
+                return;
+            }
+            Clients.Caller.SessionExist("Session not exists!");
+
             Groups.Add(Context.ConnectionId, sessionName);
-            
+
             var storyList = new List<Story>();
 
             for (var i = 0; i < stories.Count; i++)

@@ -49,6 +49,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ngx-toastr */ "./node_modules/ngx-toastr/fesm5/ngx-toastr.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _helpers_signalResolver__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helpers/signalResolver */ "./src/app/helpers/signalResolver.ts");
+/* harmony import */ var ng2_signalr__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ng2-signalr */ "./node_modules/ng2-signalr/index.js");
+
 
 
 
@@ -66,22 +68,18 @@ var AddStoryListComponent = /** @class */ (function () {
     AddStoryListComponent.prototype.checkConventions = function () {
         if (this.sessionName.length > 200) {
             this.showError("Session name cannot exceed 200 characters!");
-            //console.warn("Session name cannot exceed 200 characters!");
             return false;
         }
         if (!this.sessionName) {
             this.showError("Session name cannot be null or empty!");
-            //console.warn("Session name cannot be null or empty!");
             return false;
         }
         if (this.numberVoters <= 0) {
             this.showError("Number of voters cannot be under 0 or equal 0!");
-            //console.warn("Number of voters cannot be under 0 or equal 0!");
             return false;
         }
         if (!this.numberVoters) {
             this.showError("Number of voters cannot be null or empty!");
-            //console.warn("Number of voters cannot be null or empty!");
             return false;
         }
         return true;
@@ -91,17 +89,30 @@ var AddStoryListComponent = /** @class */ (function () {
             timeOut: 3000
         });
     };
+    AddStoryListComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.connectionResolver.getSignalR().then(function (c) {
+            var onSessionExist = new ng2_signalr__WEBPACK_IMPORTED_MODULE_5__["BroadcastEventListener"]('SessionExist');
+            c.listen(onSessionExist);
+            onSessionExist.subscribe(function (result) {
+                console.log("SessionExist: ", result);
+                if (result === "Session already exists!") {
+                    _this.showError("Session already exists!");
+                }
+                else
+                    _this.router.navigateByUrl('/poker-planning-view-as-scrummaster/' + _this.sessionName);
+            });
+        });
+    };
     AddStoryListComponent.prototype.startSessions = function () {
         var _this = this;
         if (this.checkConventions()) {
             this.storyArray = this.storyList.split(new RegExp('[,;\n]', 'g'));
-            //let elements = rawElements.map(element => element.trim());
-            //console.log(this.storyArray);
             this.connectionResolver.getSignalR().then(function (c) {
                 c.invoke('CreateSession', _this.sessionName, _this.numberVoters, _this.storyArray).then(function () {
                 });
             });
-            this.router.navigateByUrl('/poker-planning-view-as-scrummaster/' + this.sessionName);
+            //this.router.navigateByUrl('/poker-planning-view-as-scrummaster/' + this.sessionName);
         }
     };
     AddStoryListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
