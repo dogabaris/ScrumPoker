@@ -2,7 +2,7 @@
 
 ## Kurulum
 
-frontend-app klasöründe açılan terminalde
+- frontend-app klasöründe açılan terminalde
 
 ```bash
 npm i
@@ -10,7 +10,12 @@ npm i
 
 komutuyla node paketlerinin yüklenmesi gerekmektedir.
 
-Angular frontend javascript kodlarının .net tarafında güncellenmesi için
+```bash
+npm i -g @angular/cli
+```
+komutuyla angular cli'ının global yüklenmesi sağlanarak istenilen yerde angular buildleri yapılır hale getirilmelidir.
+
+- Angular frontend javascript kodlarının .net tarafında güncellenmesi için
 
 ```bash
 ng build --deploy-url /angular/libs/
@@ -18,11 +23,11 @@ ng build --deploy-url /angular/libs/
 
 komutu çalıştırılmalıdır.
 
-TrendyolCase klasöründe olması gereken .net'in packages klasörü yani nuGet Paketleri'nin indirilmesi için proje visual studio ile açılıp otomatik olarak indirilmesi sağlanmalıdır. 
+- TrendyolCase klasöründe olması gereken .net'in packages klasörü yani nuGet Paketleri'nin indirilmesi için proje visual studio ile açılıp otomatik olarak indirilmesi sağlanmalıdır. 
 
-Visual Studio'da yukarıdaki işlemler yapıldığında IIS sunucu/proje run edilmelidir.
+- Visual Studio'da yukarıdaki işlemler yapıldığında IIS sunucu/proje run edilmelidir.
 
-Angular frontend kodlarının .net tarafında kod geliştirme sırasında güncellenmesi için
+- Angular frontend kodlarının .net tarafında kod geliştirme sırasında güncellenmesi için
 
 ```bash
 ng build --deploy-url /angular/libs/ --watch
