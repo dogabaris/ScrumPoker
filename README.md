@@ -1,4 +1,4 @@
-﻿# TrendyolCase
+﻿# ScrumPoker
 
 ## Kurulum
 
